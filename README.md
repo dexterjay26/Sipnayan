@@ -1,6 +1,6 @@
 # Sipnayan
 
-A new Flutter project.
+Math Quiz Application
 
 ## Getting Started
 
