@@ -6,21 +6,6 @@ import 'package:flutter/material.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    void goTo(String goto) {
-      if (goto == "learn") {
-        Navigator.of(context)
-            .pushReplacement(MaterialPageRoute(builder: (ctx) => HomeQuiz()));
-      } else if (goto == "play") {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (ctx) => LearnHomeScreen()));
-      } else if (goto == "settings") {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (ctx) => SettingsScreen()));
-      } else if (goto == "exit") {
-        //Exit the App
-      }
-    }
-
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -35,16 +20,21 @@ class HomePage extends StatelessWidget {
                 ),
                 Spacer(),
                 homeButtonBuilder("LEARN", () {
-                  goTo("learn");
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (ctx) => LearnHomeScreen()));
                 }),
                 homeButtonBuilder("START QUIZ", () {
-                  goTo("play");
+                  print("start quiz");
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (ctx) => HomeQuiz()));
                 }),
                 homeButtonBuilder("SETTINGS", () {
-                  goTo("settings");
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (ctx) => SettingsScreen()));
                 }),
                 homeButtonBuilder("EXIT", () {
-                  goTo("exit");
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (ctx) => HomePage()));
                 }),
                 Spacer(),
               ],

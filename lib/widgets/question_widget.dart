@@ -7,13 +7,13 @@ class QuestionCard extends StatefulWidget {
   final choices;
   final answer;
 
-  final Function addScore;
+  final Function checkAnswer;
 
   QuestionCard({
     @required this.question,
     @required this.choices,
     @required this.answer,
-    @required this.addScore,
+    @required this.checkAnswer,
   });
 
   @override
@@ -48,15 +48,6 @@ class _QuestionCardState extends State<QuestionCard> {
     }
   }
 
-  bool checkAnswer(String value) {
-    if (widget.answer == value) {
-      widget.addScore();
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -83,19 +74,23 @@ class _QuestionCardState extends State<QuestionCard> {
               children: [
                 QuizButton(
                   value: widget.choices[randombuttons[0]],
-                  checkAnswer: checkAnswer,
+                  checkAnswer: widget.checkAnswer,
+                  answer: widget.answer,
                 ),
                 QuizButton(
                   value: widget.choices[randombuttons[1]],
-                  checkAnswer: checkAnswer,
+                  checkAnswer: widget.checkAnswer,
+                  answer: widget.answer,
                 ),
                 QuizButton(
                   value: widget.choices[randombuttons[2]],
-                  checkAnswer: checkAnswer,
+                  checkAnswer: widget.checkAnswer,
+                  answer: widget.answer,
                 ),
                 QuizButton(
                   value: widget.choices[randombuttons[3]],
-                  checkAnswer: checkAnswer,
+                  checkAnswer: widget.checkAnswer,
+                  answer: widget.answer,
                 ),
               ],
             ),

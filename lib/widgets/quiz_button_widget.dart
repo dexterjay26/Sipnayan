@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 class QuizButton extends StatefulWidget {
   final value;
+  final answer;
   final Function checkAnswer;
 
   QuizButton({
-    this.value,
-    this.checkAnswer,
+    @required this.value,
+    @required this.answer,
+    @required this.checkAnswer,
   });
 
   @override
@@ -28,7 +30,7 @@ class _QuizButtonState extends State<QuizButton> {
         child: MaterialButton(
           onPressed: () {
             setState(() {
-              isCorrect = widget.checkAnswer(widget.value);
+              isCorrect = widget.checkAnswer(widget.answer, widget.value);
             });
           },
           child: Text(

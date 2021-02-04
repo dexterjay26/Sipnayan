@@ -12,34 +12,13 @@ class QuizModel {
   });
 }
 
-var randomArray = [];
 
-List<QuizModel> get getrandomQuiz => _randomQuiz;
 
-List<QuizModel> _randomQuiz = randomArray.map(
-  (index) {
-    return QuizModel(
-      question: _pythonQuestionSet[0][e],
-      choices: _pythonQuestionSet[1][e],
-      answer: _pythonQuestionSet[2][e],
-    );
-  },
-).toList();
-
-void genrandomArray() {
-  var distinctIds = [];
-  var rand = new Random();
-  for (int i = 0;;) {
-    distinctIds.add(rand.nextInt(15) + 1);
-    randomArray = distinctIds.toSet().toList();
-    if (randomArray.length < 11) {
-      continue;
-    } else {
-      break;
-    }
-  }
+List get getPythonQuestionSet{
+  return _pythonQuestionSet;
 }
 
+//data
 const List _pythonQuestionSet = [
   {
     "1": "U rich?",
