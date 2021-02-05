@@ -1,7 +1,7 @@
 import 'package:Sipnayan/screens/result_page.dart';
-import 'package:Sipnayan/widgets/question_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:math';
 import 'dart:async';
 
 import '../model/quiz_model.dart';
@@ -17,34 +17,23 @@ class QuizScreen extends StatefulWidget {
 class _QuizScreenState extends State<QuizScreen> {
   int _index = 0;
   int timer = 9999;
-  int _score;
+  int _score = 0;
   bool cancelTimer = false;
+
+  Color colortoShow = Colors.indigoAccent;
+  Color right = Colors.green;
+  Color wrong = Colors.red;
+
+  Map<String, Color> btncolor = {
+    "1": Colors.indigoAccent,
+    "2": Colors.indigoAccent,
+    "3": Colors.indigoAccent,
+    "4": Colors.indigoAccent,
+  };
 
   List<QuizModel> randomizedQuiz;
 
-  bool _checkAnswer(String answer, String value) {
-    if (answer == value) {
-      _score++;
-      Timer(Duration(milliseconds: 1500), nextQuestion);
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  void nextQuestion() {
-    setState(
-      () {
-        _index++;
-        if (_index >= 10) {
-          cancelTimer = true;
-          return Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => ResultPage(marks: _score, time: 9999 - timer),
-          ));
-        } else {}
-      },
-    );
-  }
+  List tList = List.generate(10, (i) => List(4), growable: false);
 
   void startTimer() async {
     const onesec = Duration(seconds: 1);
@@ -66,11 +55,66 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   void initState() {
     randomizedQuiz = widget.randomQuiz;
-
-    print("=============");
-    print("${randomizedQuiz[0].question}");
-    print("=============");
+    randButton();
+    startTimer();
     super.initState();
+  }
+
+  void randButton() {
+    for (int w = 0; w < 10; w++) {
+      tList[w] = genRandomButton();
+      print(tList[w]);
+    }
+  }
+
+  var randombuttons = [];
+  List genRandomButton() {
+    var uniqueList = [];
+    var rng = new Random();
+    while (true) {
+      for (var i = 0; i < 4; i++) {
+        uniqueList.add(rng.nextInt(4));
+      }
+      randombuttons = uniqueList.toSet().toList();
+      if (randombuttons.length < 4) {
+        continue;
+      } else {
+        break;
+      }
+    }
+    return randombuttons;
+  }
+
+  void checkAnswer({String key, String value}) {
+    if (randomizedQuiz[_index].answer == value) {
+      _score++;
+      colortoShow = Colors.green;
+    } else {
+      colortoShow = Colors.red;
+    }
+    setState(() {
+      btncolor[key] = colortoShow;
+      Timer(Duration(milliseconds: 1500), nextQuestion);
+    });
+  }
+
+  void nextQuestion() {
+    setState(
+      () {
+        _index++;
+        if (_index >= 10) {
+          cancelTimer = true;
+          return Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => ResultPage(marks: _score, time: 9999 - timer),
+          ));
+        } else {
+          btncolor["1"] = Colors.indigoAccent;
+          btncolor["2"] = Colors.indigoAccent;
+          btncolor["3"] = Colors.indigoAccent;
+          btncolor["4"] = Colors.indigoAccent;
+        }
+      },
+    );
   }
 
   @override
@@ -103,11 +147,10 @@ class _QuizScreenState extends State<QuizScreen> {
           index: _index,
           children: randomizedQuiz
               .map(
-                (quiz) => QuestionCard(
+                (quiz) => questionBuilder(
                   question: quiz.question,
-                  answer: quiz.answer,
                   choices: quiz.choices,
-                  checkAnswer: _checkAnswer,
+                  answer: quiz.answer,
                 ),
               )
               .toList(),
@@ -115,4 +158,70 @@ class _QuizScreenState extends State<QuizScreen> {
       ),
     );
   }
+
+  Widget questionBuilder({String question, List choices, String answer}) {
+    return Column(
+      children: [
+        Expanded(
+          flex: 3,
+          child: Container(
+            padding: EdgeInsets.all(15),
+            alignment: Alignment.bottomLeft,
+            child: Text(
+              "$question",
+              style: TextStyle(
+                fontSize: 16,
+                fontFamily: "Quando",
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 6,
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                buttonBuilder(key: "1", value: choices[tList[_index][0]]),
+                buttonBuilder(key: "2", value: choices[tList[_index][1]]),
+                buttonBuilder(key: "3", value: choices[tList[_index][2]]),
+                buttonBuilder(key: "4", value: choices[tList[_index][3]]),
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget buttonBuilder({String key, String value}) => AspectRatio(
+        aspectRatio: 9 / 2,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: 10,
+            horizontal: 20,
+          ),
+          child: AnimatedContainer(
+            curve: Curves.bounceIn,
+            duration: Duration(milliseconds: 800),
+            color: btncolor[key],
+            child: MaterialButton(
+              onPressed: () {
+                checkAnswer(key: key, value: value);
+              },
+              child: Text(
+                value,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: "Alike",
+                  fontSize: 16,
+                ),
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+          ),
+        ),
+      );
 }

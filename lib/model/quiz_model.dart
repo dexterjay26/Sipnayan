@@ -12,9 +12,7 @@ class QuizModel {
   });
 }
 
-
-
-List get getPythonQuestionSet{
+List get getPythonQuestionSet {
   return _pythonQuestionSet;
 }
 
@@ -117,16 +115,16 @@ const List _pythonQuestionSet = [
       "d": "4",
     },
     "14": {
-      "a": "1",
-      "b": "2",
-      "c": "3",
-      "d": "4",
+      "a": "2",
+      "b": "3",
+      "c": "4",
+      "d": "5",
     },
     "15": {
-      "a": "1",
-      "b": "2",
-      "c": "3",
-      "d": "4",
+      "a": "3",
+      "b": "4",
+      "c": "5",
+      "d": "6",
     },
   },
   {

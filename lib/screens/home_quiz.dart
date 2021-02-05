@@ -11,38 +11,38 @@ class HomeQuiz extends StatefulWidget {
 class _HomeQuizState extends State<HomeQuiz> {
   var randomArray = [];
 
-  List pythonQuestions;
-  List<QuizModel> pythonRandomQuestions = [];
+  List quizQuestion;
+  List<QuizModel> quizRandomQuestion = [];
 
   @override
   void initState() {
-    pythonQuestions = getPythonQuestionSet;
+    super.initState();
+  }
 
+  void pythonTopic() {
+    quizQuestion = getPythonQuestionSet;
     genrandomArray();
-    print(randomArray);
     randomArray.forEach(
       (index) {
         print(index);
-        print(pythonQuestions[0][index.toString()]);
+        print(quizQuestion[0][index.toString()]);
 
         List<String> choicess = [
-          pythonQuestions[1][index.toString()]["a"],
-          pythonQuestions[1][index.toString()]["b"],
-          pythonQuestions[1][index.toString()]["c"],
-          pythonQuestions[1][index.toString()]["d"],
+          quizQuestion[1][index.toString()]["a"],
+          quizQuestion[1][index.toString()]["b"],
+          quizQuestion[1][index.toString()]["c"],
+          quizQuestion[1][index.toString()]["d"],
         ];
 
-        pythonRandomQuestions.add(
+        quizRandomQuestion.add(
           QuizModel(
-            question: pythonQuestions[0][index.toString()],
+            question: quizQuestion[0][index.toString()],
             choices: choicess,
-            answer: pythonQuestions[2][index.toString()],
+            answer: quizQuestion[2][index.toString()],
           ),
         );
       },
     );
-
-    super.initState();
   }
 
   void genrandomArray() {
@@ -69,9 +69,10 @@ class _HomeQuizState extends State<HomeQuiz> {
               children: [
                 RaisedButton(
                   onPressed: () {
+                    pythonTopic();
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (ctx) => QuizScreen(pythonRandomQuestions),
+                        builder: (ctx) => QuizScreen(quizRandomQuestion),
                       ),
                     );
                   },
