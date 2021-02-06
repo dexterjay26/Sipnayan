@@ -1,5 +1,6 @@
 import 'package:Sipnayan/screens/quiz_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math';
 import '../model/quiz_model.dart';
 
@@ -10,12 +11,20 @@ class HomeQuiz extends StatefulWidget {
 
 class _HomeQuizState extends State<HomeQuiz> {
   var randomArray = [];
+  String name;
 
   List quizQuestion;
   List<QuizModel> quizRandomQuestion = [];
 
   @override
   void initState() {
+    Future.delayed(Duration.zero, () async {
+      final prefs = await SharedPreferences.getInstance();
+
+      if (prefs.containsKey('name')) {
+        name = prefs.getString('name');
+      }
+    });
     super.initState();
   }
 
@@ -51,7 +60,7 @@ class _HomeQuizState extends State<HomeQuiz> {
     for (int i = 0;;) {
       distinctIds.add(rand.nextInt(15) + 1);
       randomArray = distinctIds.toSet().toList();
-      if (randomArray.length < 11) {
+      if (randomArray.length < 4) {
         continue;
       } else {
         break;
@@ -72,7 +81,7 @@ class _HomeQuizState extends State<HomeQuiz> {
                     pythonTopic();
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (ctx) => QuizScreen(quizRandomQuestion),
+                        builder: (ctx) => QuizScreen(quizRandomQuestion, name),
                       ),
                     );
                   },

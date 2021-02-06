@@ -1,6 +1,7 @@
 import 'package:Sipnayan/screens/result_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../helpers/db_helper.dart';
 import 'dart:math';
 import 'dart:async';
 
@@ -8,7 +9,8 @@ import '../model/quiz_model.dart';
 
 class QuizScreen extends StatefulWidget {
   final List<QuizModel> randomQuiz;
-  QuizScreen(this.randomQuiz);
+  final name;
+  QuizScreen(this.randomQuiz, this.name);
 
   @override
   _QuizScreenState createState() => _QuizScreenState();
@@ -30,6 +32,8 @@ class _QuizScreenState extends State<QuizScreen> {
     "3": Colors.indigoAccent,
     "4": Colors.indigoAccent,
   };
+
+  bool btnClickable = true;
 
   List<QuizModel> randomizedQuiz;
 
@@ -85,16 +89,20 @@ class _QuizScreenState extends State<QuizScreen> {
     return randombuttons;
   }
 
-  void checkAnswer({String key, String value}) {
+  void checkAnswer({String key, String value}) async {
     if (randomizedQuiz[_index].answer == value) {
       _score++;
       colortoShow = Colors.green;
     } else {
       colortoShow = Colors.red;
     }
+
     setState(() {
       btncolor[key] = colortoShow;
-      Timer(Duration(milliseconds: 1500), nextQuestion);
+
+      btnClickable = false;
+
+      Timer(Duration(milliseconds: 1100), nextQuestion);
     });
   }
 
@@ -102,16 +110,27 @@ class _QuizScreenState extends State<QuizScreen> {
     setState(
       () {
         _index++;
-        if (_index >= 10) {
+        if (_index > randomizedQuiz.length - 1) {
           cancelTimer = true;
-          return Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => ResultPage(marks: _score, time: 9999 - timer),
-          ));
+
+          DBHelper.insert('leaderboard', {
+            'id': widget.name + DateTime.now().toString(),
+            'name': widget.name,
+            'score': _score.toString(),
+            'time': (9999 - timer).toString(),
+          }).then((value) {
+            return Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) =>
+                  ResultPage(marks: _score, time: 9999 - timer),
+            ));
+          });
         } else {
           btncolor["1"] = Colors.indigoAccent;
           btncolor["2"] = Colors.indigoAccent;
           btncolor["3"] = Colors.indigoAccent;
           btncolor["4"] = Colors.indigoAccent;
+
+          btnClickable = true;
         }
       },
     );
@@ -203,12 +222,12 @@ class _QuizScreenState extends State<QuizScreen> {
           ),
           child: AnimatedContainer(
             curve: Curves.bounceIn,
-            duration: Duration(milliseconds: 800),
+            duration: Duration(milliseconds: 500),
             color: btncolor[key],
             child: MaterialButton(
-              onPressed: () {
-                checkAnswer(key: key, value: value);
-              },
+              onPressed: btnClickable
+                  ? () => checkAnswer(key: key, value: value)
+                  : null,
               child: Text(
                 value,
                 style: TextStyle(

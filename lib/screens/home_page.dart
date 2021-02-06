@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
                 ),
                 Spacer(),
                 homeButtonBuilder("LEARN", () {
-                  Navigator.of(context).pushReplacement(
+                  Navigator.of(context).push(
                       MaterialPageRoute(builder: (ctx) => LearnHomeScreen()));
                 }),
                 homeButtonBuilder("START QUIZ", () {
@@ -29,7 +29,7 @@ class HomePage extends StatelessWidget {
                       MaterialPageRoute(builder: (ctx) => HomeQuiz()));
                 }),
                 homeButtonBuilder("SETTINGS", () {
-                  Navigator.of(context).pushReplacement(
+                  Navigator.of(context).push(
                       MaterialPageRoute(builder: (ctx) => SettingsScreen()));
                 }),
                 homeButtonBuilder("EXIT", () {
