@@ -6,6 +6,7 @@ import '../model/leaderboard_model.dart';
 import '../helpers/db_helper.dart';
 
 class ResultPage extends StatefulWidget {
+  static const routeName = "/result-page";
   final marks;
   final time;
   ResultPage({this.marks, this.time});

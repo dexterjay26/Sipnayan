@@ -18,14 +18,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
       if (prefs.containsKey('isNameSet')) {
         isSetName = prefs.getBool('isNameSet');
-      } else {
-        print("=================");
-        print("WALA");
-        print("=================");
       }
     });
+
     Timer(
-      Duration(seconds: 1),
+      Duration(seconds: 2),
       () => {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
@@ -41,7 +38,14 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text("This is the splash screen"),
+        child: Container(
+          width: 200,
+          height: 200,
+          child: Image.asset(
+            'assets/images/logo1.1.png',
+            fit: BoxFit.cover,
+          ),
+        ),
       ),
     );
   }

@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class HomePage extends StatefulWidget {
+  static const routeName = "/home-page";
   final bool isSetName;
 
   HomePage([this.isSetName]);
@@ -76,42 +77,64 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Spacer(),
-                Text(
-                  "Sipnayan",
-                  style: TextStyle(fontSize: 30),
-                ),
-                Spacer(),
-                homeButtonBuilder("LEARN", () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (ctx) => LearnHomeScreen()));
-                }),
-                homeButtonBuilder("START QUIZ", () {
-                  print("start quiz");
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (ctx) => HomeQuiz()));
-                }),
-                homeButtonBuilder("SETTINGS", () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (ctx) => SettingsScreen()));
-                }),
-                homeButtonBuilder("EXIT", () {
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (ctx) => HomePage()));
-                }),
-                Spacer(),
-              ],
+    return SafeArea(
+      child: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/images/bg.png"), fit: BoxFit.cover)),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Center(
+            child: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Spacer(),
+                  Spacer(),
+                  homeButtonBuilder2("LEARN", () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (ctx) => LearnHomeScreen()));
+                  }, "assets/images/pbutton.png"),
+                  homeButtonBuilder2("START QUIZ", () {
+                    print("start quiz");
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (ctx) => HomeQuiz()));
+                  }, "assets/images/start.png"),
+                  homeButtonBuilder2("SETTINGS", () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (ctx) => SettingsScreen()));
+                  }, "assets/images/settings.png"),
+                  homeButtonBuilder2("EXIT", () {
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (ctx) => HomePage()));
+                  }, "assets/images/exit.png"),
+                  Spacer(),
+                  Spacer(),
+                ],
+              ),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget homeButtonBuilder2(String btnText, Function function, String image) {
+    return GestureDetector(
+      child: AspectRatio(
+        aspectRatio: 11 / 2,
+        child: Container(
+          width: 120,
+          height: 40,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(image),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ),
+      onTap: function,
     );
   }
 
@@ -121,14 +144,16 @@ class _HomePageState extends State<HomePage> {
       child: AspectRatio(
         aspectRatio: 11 / 2,
         child: OutlineButton(
+          color: Colors.white,
           onPressed: function,
+          borderSide: BorderSide(width: 1, color: Colors.white),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
           child: Text(
             btnText,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 15),
+            style: TextStyle(fontSize: 15, color: Colors.white),
           ),
         ),
       ),

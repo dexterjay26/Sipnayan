@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
+  static const routeName = "/settings";
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
 }

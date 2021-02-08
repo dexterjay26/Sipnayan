@@ -5,6 +5,7 @@ import 'dart:math';
 import '../model/quiz_model.dart';
 
 class HomeQuiz extends StatefulWidget {
+  static const routeName = "/home-quiz";
   @override
   _HomeQuizState createState() => _HomeQuizState();
 }
@@ -28,8 +29,60 @@ class _HomeQuizState extends State<HomeQuiz> {
     super.initState();
   }
 
-  void pythonTopic() {
-    quizQuestion = getPythonQuestionSet;
+  void fractionTopic() {
+    quizQuestion = getFractionQuestionSet;
+    genrandomArray();
+    randomArray.forEach(
+      (index) {
+        print(index);
+        print(quizQuestion[0][index.toString()]);
+
+        List<String> choicess = [
+          quizQuestion[1][index.toString()]["a"],
+          quizQuestion[1][index.toString()]["b"],
+          quizQuestion[1][index.toString()]["c"],
+          quizQuestion[1][index.toString()]["d"],
+        ];
+
+        quizRandomQuestion.add(
+          QuizModel(
+            question: quizQuestion[0][index.toString()],
+            choices: choicess,
+            answer: quizQuestion[2][index.toString()],
+          ),
+        );
+      },
+    );
+  }
+
+  void arithmeticTopic() {
+    quizQuestion = getArithmeticQuestionSet;
+    genrandomArray();
+    randomArray.forEach(
+      (index) {
+        print(index);
+        print(quizQuestion[0][index.toString()]);
+
+        List<String> choicess = [
+          quizQuestion[1][index.toString()]["a"],
+          quizQuestion[1][index.toString()]["b"],
+          quizQuestion[1][index.toString()]["c"],
+          quizQuestion[1][index.toString()]["d"],
+        ];
+
+        quizRandomQuestion.add(
+          QuizModel(
+            question: quizQuestion[0][index.toString()],
+            choices: choicess,
+            answer: quizQuestion[2][index.toString()],
+          ),
+        );
+      },
+    );
+  }
+
+  void problemsolvingTopic() {
+    quizQuestion = getProblemSolvingQuestionSet;
     genrandomArray();
     randomArray.forEach(
       (index) {
@@ -58,9 +111,9 @@ class _HomeQuizState extends State<HomeQuiz> {
     var distinctIds = [];
     var rand = new Random();
     for (int i = 0;;) {
-      distinctIds.add(rand.nextInt(15) + 1);
+      distinctIds.add(rand.nextInt(20) + 1);
       randomArray = distinctIds.toSet().toList();
-      if (randomArray.length < 4) {
+      if (randomArray.length < 11) {
         continue;
       } else {
         break;
@@ -70,28 +123,60 @@ class _HomeQuizState extends State<HomeQuiz> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Container(
-            child: Column(
-              children: [
-                RaisedButton(
-                  onPressed: () {
-                    pythonTopic();
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (ctx) => QuizScreen(quizRandomQuestion, name),
-                      ),
-                    );
-                  },
-                  child: Text("Take python quiz"),
-                )
-              ],
+    return SafeArea(
+      child: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/images/bgwosipnayan.png"),
+              fit: BoxFit.cover),
+        ),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Center(
+            child: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  buttonBuilder("topic1", "Fractions"),
+                  buttonBuilder("topic2", "Arithmetic"),
+                  buttonBuilder("topic3", "Problem Solving"),
+                ],
+              ),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget buttonBuilder(String where, String text) {
+    return RaisedButton(
+      onPressed: () {
+        if (where == "topic1") {
+          //Fractions
+          fractionTopic();
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (ctx) => QuizScreen(quizRandomQuestion, name),
+            ),
+          );
+        } else if (where == "topic2") {
+          arithmeticTopic();
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (ctx) => QuizScreen(quizRandomQuestion, name),
+            ),
+          );
+        } else if (where == "topic3") {
+          problemsolvingTopic();
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (ctx) => QuizScreen(quizRandomQuestion, name),
+            ),
+          );
+        }
+      },
+      child: Text(text),
     );
   }
 }

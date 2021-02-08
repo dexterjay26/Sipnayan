@@ -2,12 +2,14 @@ import 'package:Sipnayan/screens/result_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../helpers/db_helper.dart';
+import 'package:audioplayers/audio_cache.dart';
 import 'dart:math';
 import 'dart:async';
 
 import '../model/quiz_model.dart';
 
 class QuizScreen extends StatefulWidget {
+  static const routeName = "/quiz-screen";
   final List<QuizModel> randomQuiz;
   final name;
   QuizScreen(this.randomQuiz, this.name);
@@ -27,11 +29,13 @@ class _QuizScreenState extends State<QuizScreen> {
   Color wrong = Colors.red;
 
   Map<String, Color> btncolor = {
-    "1": Colors.indigoAccent,
-    "2": Colors.indigoAccent,
-    "3": Colors.indigoAccent,
-    "4": Colors.indigoAccent,
+    "a": Colors.indigoAccent,
+    "b": Colors.indigoAccent,
+    "c": Colors.indigoAccent,
+    "d": Colors.indigoAccent,
   };
+
+  AudioCache audioCache = AudioCache();
 
   bool btnClickable = true;
 
@@ -92,8 +96,10 @@ class _QuizScreenState extends State<QuizScreen> {
   void checkAnswer({String key, String value}) async {
     if (randomizedQuiz[_index].answer == value) {
       _score++;
+      audioCache.play('audio/correct.mp3');
       colortoShow = Colors.green;
     } else {
+      audioCache.play('audio/wrong.mp3');
       colortoShow = Colors.red;
     }
 
@@ -110,28 +116,30 @@ class _QuizScreenState extends State<QuizScreen> {
     setState(
       () {
         _index++;
-        if (_index > randomizedQuiz.length - 1) {
+        if (_index >= 10) {
           cancelTimer = true;
 
-          DBHelper.insert('leaderboard', {
-            'id': widget.name + DateTime.now().toString(),
-            'name': widget.name,
-            'score': _score.toString(),
-            'time': (9999 - timer).toString(),
-          }).then((value) {
-            return Navigator.of(context).pushReplacement(MaterialPageRoute(
+          Timer(Duration.zero, () async {
+            await DBHelper.insert('leaderboard', {
+              'id': widget.name + DateTime.now().toString(),
+              'name': widget.name,
+              'score': _score.toString(),
+              'time': (9999 - timer).toString(),
+            });
+          });
+          return Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
               builder: (context) =>
                   ResultPage(marks: _score, time: 9999 - timer),
-            ));
-          });
-        } else {
-          btncolor["1"] = Colors.indigoAccent;
-          btncolor["2"] = Colors.indigoAccent;
-          btncolor["3"] = Colors.indigoAccent;
-          btncolor["4"] = Colors.indigoAccent;
-
-          btnClickable = true;
+            ),
+          );
         }
+        btncolor["a"] = Colors.indigoAccent;
+        btncolor["b"] = Colors.indigoAccent;
+        btncolor["c"] = Colors.indigoAccent;
+        btncolor["d"] = Colors.indigoAccent;
+
+        btnClickable = true;
       },
     );
   }
@@ -144,7 +152,6 @@ class _QuizScreenState extends State<QuizScreen> {
         DeviceOrientation.portraitUp,
       ],
     );
-    print("QUIZ SCREEN BUILDED");
     return WillPopScope(
       onWillPop: () {
         return showDialog(
@@ -187,7 +194,7 @@ class _QuizScreenState extends State<QuizScreen> {
             padding: EdgeInsets.all(15),
             alignment: Alignment.bottomLeft,
             child: Text(
-              "$question",
+              "${_index + 1}. $question",
               style: TextStyle(
                 fontSize: 16,
                 fontFamily: "Quando",
@@ -201,10 +208,10 @@ class _QuizScreenState extends State<QuizScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                buttonBuilder(key: "1", value: choices[tList[_index][0]]),
-                buttonBuilder(key: "2", value: choices[tList[_index][1]]),
-                buttonBuilder(key: "3", value: choices[tList[_index][2]]),
-                buttonBuilder(key: "4", value: choices[tList[_index][3]]),
+                buttonBuilder(key: "a", value: choices[tList[_index][0]]),
+                buttonBuilder(key: "b", value: choices[tList[_index][1]]),
+                buttonBuilder(key: "c", value: choices[tList[_index][2]]),
+                buttonBuilder(key: "d", value: choices[tList[_index][3]]),
               ],
             ),
           ),
@@ -214,7 +221,7 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   Widget buttonBuilder({String key, String value}) => AspectRatio(
-        aspectRatio: 9 / 2,
+        aspectRatio: 11 / 2,
         child: Padding(
           padding: EdgeInsets.symmetric(
             vertical: 10,
@@ -224,12 +231,12 @@ class _QuizScreenState extends State<QuizScreen> {
             curve: Curves.bounceIn,
             duration: Duration(milliseconds: 500),
             color: btncolor[key],
-            child: MaterialButton(
+            child: OutlineButton(
               onPressed: btnClickable
                   ? () => checkAnswer(key: key, value: value)
                   : null,
               child: Text(
-                value,
+                "$key. $value",
                 style: TextStyle(
                   color: Colors.white,
                   fontFamily: "Alike",
