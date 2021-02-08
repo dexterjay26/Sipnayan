@@ -9,19 +9,12 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  @override
-  void initState() {
-    Future.delayed(
-      Duration.zero,
-      () async {
-        final prefs = await SharedPreferences.getInstance();
+  Future<void> fetchAndGetLeaderBoards() async {
+    final prefs = await SharedPreferences.getInstance();
 
-        if (prefs.containsKey('name')) {
-          nameController.text = prefs.getString('name');
-        }
-      },
-    );
-    super.initState();
+    if (prefs.containsKey('name')) {
+      nameController.text = prefs.getString('name');
+    }
   }
 
   var nameController = TextEditingController();
@@ -42,79 +35,85 @@ class _SettingsScreenState extends State<SettingsScreen> {
             backgroundColor: Colors.transparent,
           ),
           body: Center(
-            child: Container(
-              child: Column(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      margin: EdgeInsets.all(20),
+            child: FutureBuilder(
+              builder: (ctx, snapShot) => snapShot.connectionState ==
+                      ConnectionState.waiting
+                  ? CircularProgressIndicator()
+                  : Container(
                       child: Column(
                         children: [
-                          TextField(
-                            cursorColor: Colors.white,
-                            style: TextStyle(color: Colors.white),
-                            controller: nameController,
-                            decoration: new InputDecoration(
-                              enabledBorder: const OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: Colors.white, width: 1.0),
-                              ),
-                              labelText: 'Name',
-                              labelStyle: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          AspectRatio(
-                            aspectRatio: 3 / .55,
-                            child: FlatButton(
-                              color: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              onPressed: () async {
-                                final prefs =
-                                    await SharedPreferences.getInstance();
-                                await prefs.setString(
-                                  'name',
-                                  nameController.text,
-                                );
+                          Expanded(
+                            flex: 2,
+                            child: Container(
+                              margin: EdgeInsets.all(20),
+                              child: Column(
+                                children: [
+                                  TextField(
+                                    cursorColor: Colors.white,
+                                    style: TextStyle(color: Colors.white),
+                                    controller: nameController,
+                                    decoration: new InputDecoration(
+                                      enabledBorder: const OutlineInputBorder(
+                                        borderSide: const BorderSide(
+                                            color: Colors.white, width: 1.0),
+                                      ),
+                                      labelText: 'Name',
+                                      labelStyle:
+                                          TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  AspectRatio(
+                                    aspectRatio: 3 / .55,
+                                    child: FlatButton(
+                                      color: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      onPressed: () async {
+                                        final prefs = await SharedPreferences
+                                            .getInstance();
+                                        await prefs.setString(
+                                          'name',
+                                          nameController.text,
+                                        );
 
-                                Fluttertoast.showToast(
-                                  msg: "Name Saved!",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.SNACKBAR,
-                                );
-                              },
-                              child: Text(
-                                "Save name",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ),
+                                        Fluttertoast.showToast(
+                                          msg: "Name Saved!",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.SNACKBAR,
+                                        );
+                                      },
+                                      child: Text(
+                                        "Save name",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
+                          Expanded(
+                            flex: 3,
+                            child: Container(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  textBuilder("Researchers", true),
+                                  textBuilder("Wagan, Averiene May A."),
+                                  textBuilder("Dela Cruz, Hannah Jane G."),
+                                  textBuilder("Morales, Mary Rose R."),
+                                  textBuilder("Sarmiento, John Zeus D."),
+                                ],
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: Container(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          textBuilder("Researchers", true),
-                          textBuilder("Wagan, Averiene May A."),
-                          textBuilder("Dela Cruz, Hannah Jane G."),
-                          textBuilder("Morales, Mary Rose R."),
-                          textBuilder("Sarmiento, John Zeus D."),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
             ),
           ),
         ),

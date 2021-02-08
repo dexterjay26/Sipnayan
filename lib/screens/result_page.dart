@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:Sipnayan/screens/leaderboards_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:Sipnayan/screens/home_page.dart';
 import '../model/leaderboard_model.dart';
@@ -102,129 +103,108 @@ class _ResultPageState extends State<ResultPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Result"),
-      ),
-      body: FutureBuilder(
-        future: fetchAndGetLeaderBoards(),
-        builder: (ctx, snapShot) => snapShot.connectionState ==
-                ConnectionState.waiting
-            ? Center(child: CircularProgressIndicator())
-            : Column(
-                children: [
-                  Expanded(
-                    flex: 7,
-                    child: Material(
-                      child: Container(
-                        child: Column(
-                          children: [
-                            Container(
-                              width: 300,
-                              height: 300,
-                              child: ClipRect(
-                                child: Image(
-                                  image: AssetImage(image),
+    return SafeArea(
+      child: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/bg.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            title: Text(
+              "Result",
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.transparent,
+          ),
+          body: FutureBuilder(
+            future: fetchAndGetLeaderBoards(),
+            builder: (ctx, snapShot) =>
+                snapShot.connectionState == ConnectionState.waiting
+                    ? Center(child: CircularProgressIndicator())
+                    : Column(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: Opacity(
+                              opacity: 0.9,
+                              child: Container(
+                                margin: EdgeInsets.all(15),
+                                decoration: BoxDecoration(
+                                  color: Colors.white, // added
+                                  border: Border.all(
+                                      color: Colors.white, width: 0), // added
+                                  borderRadius: BorderRadius.circular(10.0),
                                 ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 5,
-                                horizontal: 15,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  message,
-                                  textAlign: TextAlign.justify,
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontFamily: "Quando",
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 4,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        OutlineButton(
-                          onPressed: () {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (ctx) => HomePage(),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            "Continue",
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 25),
-                          borderSide:
-                              BorderSide(width: 2, color: Colors.indigoAccent),
-                        ),
-                        OutlineButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: Text("Quiz"),
-                                content: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: leaderboards.length,
-                                    itemBuilder: (ctx, i) {
-                                      return LimitedBox(
-                                        maxHeight: 100,
-                                        child: Container(
-                                          child: Row(
-                                            children: [
-                                              Text(leaderboards[i].name),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              Text(leaderboards[i].score),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              Text(timeRecords[i]),
-                                            ],
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 5,
+                                        horizontal: 15,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          message,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontFamily: "Quando",
                                           ),
                                         ),
-                                      );
-                                    }),
-                                actions: [
-                                  FlatButton(
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(),
-                                    child: Text("Ok"),
-                                  )
-                                ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            );
-                          },
-                          child: Text(
-                            "Leaderboard",
-                            style: TextStyle(fontSize: 18),
+                            ),
                           ),
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 25),
-                          borderSide:
-                              BorderSide(width: 2, color: Colors.indigoAccent),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                          Expanded(
+                            flex: 4,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                buttonBuilder(() {
+                                  Navigator.of(context)
+                                      .pushReplacementNamed(HomePage.routeName);
+                                }, "assets/images/continues.png"),
+                                buttonBuilder(() {
+                                  Navigator.of(context)
+                                      .pushReplacementNamed(HomePage.routeName);
+                                }, "assets/images/leaderboard.png"),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+          ),
+        ),
       ),
+    );
+  }
+
+  Widget buttonBuilder(Function function, String image) {
+    return GestureDetector(
+      child: AspectRatio(
+        aspectRatio: 10 / 2.4,
+        child: Container(
+          margin: EdgeInsets.symmetric(
+            vertical: 5,
+            horizontal: 20,
+          ),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(image),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ),
+      onTap: function,
     );
   }
 }

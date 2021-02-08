@@ -9,7 +9,7 @@ class DBHelper {
       path.join(dbPath, 'scores.db'),
       onCreate: (db, version) {
         return db.execute(
-            'CREATE TABLE leaderboard(id TEXT PRIMARY KEY, name TEXT, score TEXT, time TEXT)');
+            'CREATE TABLE leaderboard(id TEXT PRIMARY KEY, name TEXT, score TEXT, time TEXT, type TEXT)');
       },
       version: 1,
     );

@@ -1,4 +1,5 @@
 import 'package:Sipnayan/screens/home_quiz.dart';
+import 'package:Sipnayan/screens/leaderboards_screen.dart';
 import 'package:Sipnayan/screens/learn_home_screen.dart';
 import 'package:Sipnayan/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
@@ -88,6 +89,18 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         child: Scaffold(
+          appBar: AppBar(
+            actions: [
+              IconButton(
+                icon: Icon(Icons.settings, color: Colors.white),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(SettingsScreen.routeName);
+                },
+              )
+            ],
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+          ),
           backgroundColor: Colors.transparent,
           body: Center(
             child: Container(
@@ -104,9 +117,10 @@ class _HomePageState extends State<HomePage> {
                     print("start quiz");
                     Navigator.of(context).pushNamed(HomeQuiz.routeName);
                   }, "assets/images/startquiz.png"),
-                  homeButtonBuilder2("SETTINGS", () {
-                    Navigator.of(context).pushNamed(SettingsScreen.routeName);
-                  }, "assets/images/settings.png"),
+                  homeButtonBuilder2(
+                      "LEADERBOARDS", () {
+                        Navigator.of(context).pushNamed(LeaderBoardsScreen.routeName);
+                      }, "assets/images/leaderboard.png"),
                   homeButtonBuilder2("EXIT", () {
                     SystemNavigator.pop();
                   }, "assets/images/exit.png"),

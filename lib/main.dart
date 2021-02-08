@@ -1,5 +1,6 @@
 import 'package:Sipnayan/screens/home_page.dart';
 import 'package:Sipnayan/screens/home_quiz.dart';
+import 'package:Sipnayan/screens/leaderboards_screen.dart';
 import 'package:Sipnayan/screens/learn_home_screen.dart';
 import 'package:Sipnayan/screens/learn_screen.dart';
 import 'package:Sipnayan/screens/quiz_screen.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         HomeQuiz.routeName: (ctx) => HomeQuiz(),
         LearnHomeScreen.routeName: (ctx) => LearnHomeScreen(),
         SettingsScreen.routeName: (ctx) => SettingsScreen(),
+        LeaderBoardsScreen.routeName: (ctx) => LeaderBoardsScreen(),
       },
     );
   }
