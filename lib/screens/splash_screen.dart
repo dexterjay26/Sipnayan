@@ -10,16 +10,16 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  var isSetName = false;
   @override
   void initState() {
-    var isSetName = false;
     Future.delayed(Duration.zero, () async {
       final prefs = await SharedPreferences.getInstance();
 
       if (prefs.containsKey('isNameSet')) {
         isSetName = prefs.getBool('isNameSet');
       }
-    });
+    });                        
 
     Timer(
       Duration(seconds: 2),

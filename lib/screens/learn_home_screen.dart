@@ -8,9 +8,11 @@ class LearnHomeScreen extends StatelessWidget {
     return SafeArea(
       child: Container(
         decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/images/bgwosipnayan.png"),
-                fit: BoxFit.cover)),
+          image: DecorationImage(
+            image: AssetImage("assets/images/bgwosipnayan.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
@@ -18,15 +20,17 @@ class LearnHomeScreen extends StatelessWidget {
             backgroundColor: Colors.transparent,
           ),
           body: Center(
-            child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  buttonBuilder("Arithmetic", "xJBmbfs0R6M", context),
-                  buttonBuilder("Fractions", "G-glIljwMUA", context),
-                  buttonBuilder("Fractions 2", "pnUhsU0LvXo", context),
-                  buttonBuilder("Problem Solving", "niTKRc_BUWI", context),
-                ],
+            child: SingleChildScrollView(
+              child: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    buttonBuilder("Arithmetic", "xJBmbfs0R6M", context),
+                    buttonBuilder("Fractions", "G-glIljwMUA", context),
+                    buttonBuilder("Fractions 2", "pnUhsU0LvXo", context),
+                    buttonBuilder("Problem Solving", "niTKRc_BUWI", context),
+                  ],
+                ),
               ),
             ),
           ),
@@ -36,15 +40,28 @@ class LearnHomeScreen extends StatelessWidget {
   }
 
   Widget buttonBuilder(String topic, String videoId, BuildContext context) {
-    return RaisedButton(
-      onPressed: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (ctx) => LearnScreen(videoId, topic),
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+      child: AspectRatio(
+        aspectRatio: 11 / 2,
+        child: FlatButton(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
           ),
-        );
-      },
-      child: Text(topic),
+          color: Colors.white,
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (ctx) => LearnScreen(videoId, topic),
+              ),
+            );
+          },
+          child: Text(
+            topic,
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+      ),
     );
   }
 }

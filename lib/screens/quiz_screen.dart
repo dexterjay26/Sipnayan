@@ -29,10 +29,10 @@ class _QuizScreenState extends State<QuizScreen> {
   Color wrong = Colors.red;
 
   Map<String, Color> btncolor = {
-    "a": Colors.indigoAccent,
-    "b": Colors.indigoAccent,
-    "c": Colors.indigoAccent,
-    "d": Colors.indigoAccent,
+    "a": Colors.white,
+    "b": Colors.white,
+    "c": Colors.white,
+    "d": Colors.white,
   };
 
   AudioCache audioCache = AudioCache();
@@ -105,9 +105,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
     setState(() {
       btncolor[key] = colortoShow;
-
       btnClickable = false;
-
       Timer(Duration(milliseconds: 1100), nextQuestion);
     });
   }
@@ -134,10 +132,10 @@ class _QuizScreenState extends State<QuizScreen> {
             ),
           );
         }
-        btncolor["a"] = Colors.indigoAccent;
-        btncolor["b"] = Colors.indigoAccent;
-        btncolor["c"] = Colors.indigoAccent;
-        btncolor["d"] = Colors.indigoAccent;
+        btncolor["a"] = Colors.white;
+        btncolor["b"] = Colors.white;
+        btncolor["c"] = Colors.white;
+        btncolor["d"] = Colors.white;
 
         btnClickable = true;
       },
@@ -168,18 +166,29 @@ class _QuizScreenState extends State<QuizScreen> {
           ),
         );
       },
-      child: Scaffold(
-        body: IndexedStack(
-          index: _index,
-          children: randomizedQuiz
-              .map(
-                (quiz) => questionBuilder(
-                  question: quiz.question,
-                  choices: quiz.choices,
-                  answer: quiz.answer,
-                ),
-              )
-              .toList(),
+      child: SafeArea(
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/bgwosipnayan.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: IndexedStack(
+              index: _index,
+              children: randomizedQuiz
+                  .map(
+                    (quiz) => questionBuilder(
+                      question: quiz.question,
+                      choices: quiz.choices,
+                      answer: quiz.answer,
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
         ),
       ),
     );
@@ -189,15 +198,25 @@ class _QuizScreenState extends State<QuizScreen> {
     return Column(
       children: [
         Expanded(
-          flex: 3,
-          child: Container(
-            padding: EdgeInsets.all(15),
-            alignment: Alignment.bottomLeft,
-            child: Text(
-              "${_index + 1}. $question",
-              style: TextStyle(
-                fontSize: 16,
-                fontFamily: "Quando",
+          flex: 5,
+          child: Opacity(
+            opacity: 0.8,
+            child: Container(
+              margin: EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                color: Colors.white, // added
+                border: Border.all(color: Colors.white, width: 0), // added
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              padding: EdgeInsets.all(15),
+              alignment: Alignment.center,
+              child: Text(
+                "$question",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontFamily: "Quando",
+                ),
               ),
             ),
           ),
@@ -221,30 +240,32 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   Widget buttonBuilder({String key, String value}) => AspectRatio(
-        aspectRatio: 11 / 2,
+        aspectRatio: 10 / 2.4,
         child: Padding(
           padding: EdgeInsets.symmetric(
-            vertical: 10,
+            vertical: 5,
             horizontal: 20,
           ),
           child: AnimatedContainer(
-            curve: Curves.bounceIn,
+            curve: Curves.bounceOut,
             duration: Duration(milliseconds: 500),
-            color: btncolor[key],
-            child: OutlineButton(
+            //color: btncolor[key],
+            decoration: BoxDecoration(
+              color: btncolor[key], // added
+              border: Border.all(color: btncolor[key], width: 1), // added
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: FlatButton(
               onPressed: btnClickable
                   ? () => checkAnswer(key: key, value: value)
                   : null,
               child: Text(
                 "$key. $value",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontFamily: "Alike",
                   fontSize: 16,
                 ),
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
               ),
             ),
           ),

@@ -64,6 +64,10 @@ flutter:
     - assets/images/pbutton.png
     - assets/images/settings.png
     - assets/images/start.png
+    - assets/images/continues.png
+    - assets/images/leaderboard.png
+    - assets/images/learn.png
+    - assets/images/startquiz.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

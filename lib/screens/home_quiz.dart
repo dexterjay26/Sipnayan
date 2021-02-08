@@ -131,6 +131,10 @@ class _HomeQuizState extends State<HomeQuiz> {
               fit: BoxFit.cover),
         ),
         child: Scaffold(
+          appBar: AppBar(
+            title: Text("Quiz"),
+            backgroundColor: Colors.transparent,
+          ),
           backgroundColor: Colors.transparent,
           body: Center(
             child: Container(
@@ -150,33 +154,46 @@ class _HomeQuizState extends State<HomeQuiz> {
   }
 
   Widget buttonBuilder(String where, String text) {
-    return RaisedButton(
-      onPressed: () {
-        if (where == "topic1") {
-          //Fractions
-          fractionTopic();
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (ctx) => QuizScreen(quizRandomQuestion, name),
-            ),
-          );
-        } else if (where == "topic2") {
-          arithmeticTopic();
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (ctx) => QuizScreen(quizRandomQuestion, name),
-            ),
-          );
-        } else if (where == "topic3") {
-          problemsolvingTopic();
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (ctx) => QuizScreen(quizRandomQuestion, name),
-            ),
-          );
-        }
-      },
-      child: Text(text),
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+      child: AspectRatio(
+        aspectRatio: 11 / 2,
+        child: FlatButton(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          color: Colors.white,
+          onPressed: () {
+            if (where == "topic1") {
+              //Fractions
+              fractionTopic();
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (ctx) => QuizScreen(quizRandomQuestion, name),
+                ),
+              );
+            } else if (where == "topic2") {
+              arithmeticTopic();
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (ctx) => QuizScreen(quizRandomQuestion, name),
+                ),
+              );
+            } else if (where == "topic3") {
+              problemsolvingTopic();
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (ctx) => QuizScreen(quizRandomQuestion, name),
+                ),
+              );
+            }
+          },
+          child: Text(
+            text,
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:Sipnayan/screens/home_quiz.dart';
 import 'package:Sipnayan/screens/learn_home_screen.dart';
 import 'package:Sipnayan/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -25,6 +26,7 @@ class _HomePageState extends State<HomePage> {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) async {
           await showDialog(
+            barrierDismissible: false,
             context: context,
             builder: (BuildContext context) => AlertDialog(
               title: Text("Set Name"),
@@ -80,8 +82,11 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child: Container(
         decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/images/bg.png"), fit: BoxFit.cover)),
+          image: DecorationImage(
+            image: AssetImage("assets/images/bg.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Scaffold(
           backgroundColor: Colors.transparent,
           body: Center(
@@ -91,24 +96,20 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Spacer(),
                   Spacer(),
+                  Spacer(),
                   homeButtonBuilder2("LEARN", () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (ctx) => LearnHomeScreen()));
-                  }, "assets/images/pbutton.png"),
+                    Navigator.of(context).pushNamed(LearnHomeScreen.routeName);
+                  }, "assets/images/learn.png"),
                   homeButtonBuilder2("START QUIZ", () {
                     print("start quiz");
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (ctx) => HomeQuiz()));
-                  }, "assets/images/start.png"),
+                    Navigator.of(context).pushNamed(HomeQuiz.routeName);
+                  }, "assets/images/startquiz.png"),
                   homeButtonBuilder2("SETTINGS", () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (ctx) => SettingsScreen()));
+                    Navigator.of(context).pushNamed(SettingsScreen.routeName);
                   }, "assets/images/settings.png"),
                   homeButtonBuilder2("EXIT", () {
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (ctx) => HomePage()));
+                    SystemNavigator.pop();
                   }, "assets/images/exit.png"),
-                  Spacer(),
                   Spacer(),
                 ],
               ),
@@ -124,8 +125,6 @@ class _HomePageState extends State<HomePage> {
       child: AspectRatio(
         aspectRatio: 11 / 2,
         child: Container(
-          width: 120,
-          height: 40,
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage(image),
