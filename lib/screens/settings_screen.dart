@@ -36,6 +36,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           body: Center(
             child: FutureBuilder(
+              future: fetchAndGetLeaderBoards(),
               builder: (ctx, snapShot) => snapShot.connectionState ==
                       ConnectionState.waiting
                   ? CircularProgressIndicator()
