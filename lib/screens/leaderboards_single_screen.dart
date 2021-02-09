@@ -46,7 +46,6 @@ class _LeaderBoardsSingleScreenState extends State<LeaderBoardsSingleScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        color: Colors.black38,
         decoration: BoxDecoration(
           image: DecorationImage(
               image: AssetImage("assets/images/bgwosipnayan.png"),
