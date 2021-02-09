@@ -2,8 +2,6 @@ import 'package:Sipnayan/screens/home_page.dart';
 import 'package:Sipnayan/screens/home_quiz.dart';
 import 'package:Sipnayan/screens/leaderboards_screen.dart';
 import 'package:Sipnayan/screens/learn_home_screen.dart';
-import 'package:Sipnayan/screens/learn_screen.dart';
-import 'package:Sipnayan/screens/quiz_screen.dart';
 import 'package:Sipnayan/screens/settings_screen.dart';
 import 'package:Sipnayan/screens/splash_screen.dart';
 import 'package:flutter/material.dart';

@@ -25,8 +25,8 @@ List get getProblemSolvingQuestionSet {
 //data
 const List _fractionQuestionSet = [
   {
-    "1": "U rich?",
-    "2": "U lazy?",
+    "1": "What is 10/20 + 5/20?",
+    "2": "What is 1/8 + 3/8?",
     "3": "Which is equal to 1/4?",
     "4": "Which of the following is greater than 1/2?",
     "5": "Which of the following is less than 3/4?",
@@ -50,16 +50,16 @@ const List _fractionQuestionSet = [
   },
   {
     "1": {
-      "a": "no",
-      "b": "yesss",
-      "c": "yess",
-      "d": "yes",
+      "a": "1/4",
+      "b": "3/4",
+      "c": "10/20",
+      "d": "12/20",
     },
     "2": {
-      "a": "no",
-      "b": "yesss",
-      "c": "yess",
-      "d": "yes",
+      "a": "3/4",
+      "b": "1/2",
+      "c": "2/4",
+      "d": "1/8",
     },
     "3": {
       "a": "2/10",
@@ -171,8 +171,8 @@ const List _fractionQuestionSet = [
     },
   },
   {
-    "1": "no",
-    "2": "no",
+    "1": "3/4",
+    "2": "1/2",
     "3": "2/8",
     "4": "2/3",
     "5": "2/3",

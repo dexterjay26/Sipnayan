@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:Sipnayan/screens/leaderboards_screen.dart';
 import 'package:Sipnayan/screens/leaderboards_single_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:Sipnayan/screens/home_page.dart';
