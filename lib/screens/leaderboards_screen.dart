@@ -1,53 +1,24 @@
+import 'package:Sipnayan/screens/leaderboards_single_screen2.dart';
 import 'package:flutter/material.dart';
-import '../model/leaderboard_model.dart';
-import '../helpers/db_helper.dart';
 
 class LeaderBoardsScreen extends StatefulWidget {
   static const routeName = "/leaderboard";
+  final type;
+  LeaderBoardsScreen([this.type]);
+
   @override
   _LeaderBoardsScreenState createState() => _LeaderBoardsScreenState();
 }
 
 class _LeaderBoardsScreenState extends State<LeaderBoardsScreen> {
-  List<LeaderBoardModel> leaderboards;
-  List<String> timeRecords = [];
-  Future<void> fetchAndGetLeaderBoards() async {
-    var dataList = await DBHelper.getData('leaderboard');
-
-    if (dataList != null) {
-      leaderboards = dataList.map(
-        (score) {
-          return LeaderBoardModel(
-            id: score['id'],
-            name: score['name'],
-            score: score['score'],
-            time: score['time'],
-          );
-        },
-      ).toList();
-
-      leaderboards.forEach((element) {
-        int minutess = (int.parse(element.time) / 60).truncate();
-        int secondss = (int.parse(element.time) % 60);
-
-        if (minutess == 0) {
-          timeRecords.add("${element.time}s");
-        } else {
-          timeRecords.add("${minutess}m and ${secondss}s");
-        }
-      });
-
-      leaderboards
-          .sort((a, b) => int.parse(b.score).compareTo(int.parse(a.score)));
-    } else {
-      print("NO DATA");
-    }
-  }
-
+  int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
-    int _index = 0;
-    //print("timerecors: ${timeRecords[_index]}");
+    final _tabs = [
+      LeaderBoardsSingleScreen2("Fractions"),
+      LeaderBoardsSingleScreen2("Arithmetic"),
+      LeaderBoardsSingleScreen2("Problem Solving"),
+    ];
     return SafeArea(
       child: Container(
         decoration: BoxDecoration(
@@ -61,33 +32,30 @@ class _LeaderBoardsScreenState extends State<LeaderBoardsScreen> {
             title: Text("Leaderboards"),
             backgroundColor: Colors.transparent,
           ),
-          body: FutureBuilder(
-            future: fetchAndGetLeaderBoards(),
-            builder: (ctx, snapShot) =>
-                snapShot.connectionState == ConnectionState.waiting
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : Container(
-                        child: Table(
-                          children: [
-                            TableRow(children: [
-                              headerBuilder("Name"),
-                              headerBuilder("Score"),
-                              headerBuilder("Time")
-                            ]),
-                            ...leaderboards.map((e) {
-                              String timetoShow =
-                                  timeToShoww(int.parse(e.time));
-                              return TableRow(children: [
-                                textBuilder(e.name),
-                                textBuilder(e.score),
-                                textBuilder(timetoShow),
-                              ]);
-                            })
-                          ],
-                        ),
-                      ),
+          body: _tabs[_currentIndex],
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: _currentIndex,
+            type: BottomNavigationBarType.shifting,
+            backgroundColor: Colors.transparent,
+            items: [
+              BottomNavigationBarItem(
+                icon: Text("Fraction", textAlign: TextAlign.center),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Text("Arithmetic", textAlign: TextAlign.center),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Text("Problem Solving", textAlign: TextAlign.center),
+                label: '',
+              ),
+            ],
+            onTap: (indexx) {
+              setState(() {
+                _currentIndex = indexx;
+              });
+            },
           ),
         ),
       ),

@@ -12,7 +12,8 @@ class QuizScreen extends StatefulWidget {
   static const routeName = "/quiz-screen";
   final List<QuizModel> randomQuiz;
   final name;
-  QuizScreen(this.randomQuiz, this.name);
+  final type;
+  QuizScreen(this.randomQuiz, this.name, this.type);
 
   @override
   _QuizScreenState createState() => _QuizScreenState();
@@ -123,12 +124,16 @@ class _QuizScreenState extends State<QuizScreen> {
               'name': widget.name,
               'score': _score.toString(),
               'time': (9999 - timer).toString(),
+              'type': widget.type,
             });
           });
           return Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) =>
-                  ResultPage(marks: _score, time: 9999 - timer),
+              builder: (context) => ResultPage(
+                marks: _score,
+                time: 9999 - timer,
+                type: widget.type,
+              ),
             ),
           );
         }
@@ -199,24 +204,21 @@ class _QuizScreenState extends State<QuizScreen> {
       children: [
         Expanded(
           flex: 5,
-          child: Opacity(
-            opacity: 0.8,
-            child: Container(
-              margin: EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                color: Colors.white, // added
-                border: Border.all(color: Colors.white, width: 0), // added
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              padding: EdgeInsets.all(15),
-              alignment: Alignment.center,
-              child: Text(
-                "$question",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontFamily: "Quando",
-                ),
+          child: Container(
+            margin: EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              color: Colors.white70, // added
+              border: Border.all(color: Colors.white70, width: 0), // added
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            padding: EdgeInsets.all(15),
+            alignment: Alignment.center,
+            child: Text(
+              "$question",
+              textAlign: TextAlign.justify,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 20,
               ),
             ),
           ),

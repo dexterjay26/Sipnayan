@@ -141,9 +141,9 @@ class _HomeQuizState extends State<HomeQuiz> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  buttonBuilder("topic1", "Fractions"),
-                  buttonBuilder("topic2", "Arithmetic"),
-                  buttonBuilder("topic3", "Problem Solving"),
+                  buttonBuilder("Fractions"),
+                  buttonBuilder("Arithmetic"),
+                  buttonBuilder("Problem Solving"),
                 ],
               ),
             ),
@@ -153,7 +153,7 @@ class _HomeQuizState extends State<HomeQuiz> {
     );
   }
 
-  Widget buttonBuilder(String where, String text) {
+  Widget buttonBuilder(String text) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
       child: AspectRatio(
@@ -164,26 +164,26 @@ class _HomeQuizState extends State<HomeQuiz> {
           ),
           color: Colors.white,
           onPressed: () {
-            if (where == "topic1") {
+            if (text == "Fractions") {
               //Fractions
               fractionTopic();
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (ctx) => QuizScreen(quizRandomQuestion, name),
+                  builder: (ctx) => QuizScreen(quizRandomQuestion, name, text),
                 ),
               );
-            } else if (where == "topic2") {
+            } else if (text == "Arithmetic") {
               arithmeticTopic();
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (ctx) => QuizScreen(quizRandomQuestion, name),
+                  builder: (ctx) => QuizScreen(quizRandomQuestion, name, text),
                 ),
               );
-            } else if (where == "topic3") {
+            } else if (text == "Problem Solving") {
               problemsolvingTopic();
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (ctx) => QuizScreen(quizRandomQuestion, name),
+                  builder: (ctx) => QuizScreen(quizRandomQuestion, name, text),
                 ),
               );
             }

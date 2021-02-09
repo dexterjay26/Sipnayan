@@ -18,7 +18,7 @@ List get getArithmeticQuestionSet {
   return _arithmeticQuestionSet;
 }
 
-List get getProblemSolvingQuestionSet{
+List get getProblemSolvingQuestionSet {
   return _problemSolvingQuestionSet;
 }
 
@@ -37,7 +37,8 @@ const List _fractionQuestionSet = [
     "10": "Multiply 2/5 from 4/5.",
     "11": "Find the difference of 5/15 and 4/15.",
     "12": "What is 2/5 ÷ 4/10?",
-    "13": "What does the picture indicates?",
+    "13":
+        "The sum of 2/5 and 1/5 is 3/5, which is not the equivalent value of the answer?",
     "14":
         "15/7 is an example of improper fraction, which of the following is the mixed number of the given fraction?",
     "15": "What is 9/15 multiply to 5/10?",
@@ -121,10 +122,10 @@ const List _fractionQuestionSet = [
       "d": "1",
     },
     "13": {
-      "a": "2/4",
-      "b": "1/4",
-      "c": "3/4",
-      "d": "1",
+      "a": "6/10",
+      "b": "9/15",
+      "c": "12/15",
+      "d": "15/25",
     },
     "14": {
       "a": "2 1/7",
@@ -182,7 +183,7 @@ const List _fractionQuestionSet = [
     "10": "8/25",
     "11": "1/15",
     "12": "1",
-    "13": "3/4",
+    "13": "12/15",
     "14": "2 1/7",
     "15": "3/10",
     "16": "3/20",
