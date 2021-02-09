@@ -1,3 +1,4 @@
+import 'package:Sipnayan/screens/home_page.dart';
 import 'package:Sipnayan/screens/result_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +25,7 @@ class _QuizScreenState extends State<QuizScreen> {
   int timer = 9999;
   int _score = 0;
   bool cancelTimer = false;
+  String timeToShow = "";
 
   Color colortoShow = Colors.indigoAccent;
   Color right = Colors.green;
@@ -55,10 +57,28 @@ class _QuizScreenState extends State<QuizScreen> {
         } else if (cancelTimer) {
           t.cancel();
         } else {
-          timer--;
+          setState(() {
+            timeToShow = _printDuration(Duration(seconds: (9999 - timer)));
+            print(timeToShow);
+            timer--;
+          });
         }
       },
     );
+  }
+
+  String formatTime(double time) {
+    Duration duration = Duration(milliseconds: time.round());
+    return [duration.inHours, duration.inMinutes, duration.inSeconds]
+        .map((seg) => seg.remainder(60).toString().padLeft(2, '0'))
+        .join(':');
+  }
+
+  String _printDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
   }
 
   @override
@@ -204,23 +224,68 @@ class _QuizScreenState extends State<QuizScreen> {
       children: [
         Expanded(
           flex: 5,
-          child: Container(
-            margin: EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              color: Colors.white70, // added
-              border: Border.all(color: Colors.white70, width: 0), // added
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            padding: EdgeInsets.all(15),
-            alignment: Alignment.center,
-            child: Text(
-              "$question",
-              textAlign: TextAlign.justify,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
+          child: Stack(
+            children: [
+              Container(
+                margin: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: Colors.white70, // added
+                  border: Border.all(color: Colors.white70, width: 0), // added
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                padding: EdgeInsets.all(15),
+                alignment: Alignment.center,
+                child: Text(
+                  "$question",
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                  ),
+                ),
               ),
-            ),
+              Container(
+                padding: EdgeInsets.only(top: 25, left: 25, right: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("${_index + 1}/10"),
+                    Text(timeToShow),
+                    Container(
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.home,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text("Alert"),
+                              content: Text("Are you sure?"),
+                              actions: [
+                                FlatButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: Text("Cancel"),
+                                ),
+                                FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (ctx) => HomePage()));
+                                    },
+                                    child: Text("Yes")),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
         Expanded(
