@@ -17,6 +17,10 @@ class _HomeQuizState extends State<HomeQuiz> {
   List quizQuestion;
   List<QuizModel> quizRandomQuestion = [];
 
+  var fractionImage;
+  var arithmeticImage;
+  var problemSolvingImage;
+
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
@@ -26,7 +30,23 @@ class _HomeQuizState extends State<HomeQuiz> {
         name = prefs.getString('name');
       }
     });
+
+    fractionImage = AssetImage('assets/images/FRACTIONS.png');
+
+    arithmeticImage = AssetImage('assets/images/ARITHMETIC.png');
+
+    problemSolvingImage = AssetImage('assets/images/PROBLEM SOLVING.png');
+
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    precacheImage(fractionImage, context);
+    precacheImage(arithmeticImage, context);
+    precacheImage(problemSolvingImage, context);
+    super.didChangeDependencies();
   }
 
   void fractionTopic() {
@@ -141,15 +161,59 @@ class _HomeQuizState extends State<HomeQuiz> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  buttonBuilder("Fractions"),
-                  buttonBuilder("Arithmetic"),
-                  buttonBuilder("Problem Solving"),
+                  buttonBuilder2("Fractions", "assets/images/FRACTIONS.png",
+                      fractionImage),
+                  buttonBuilder2("Arithmetic", "assets/images/ARITHMETIC.png",
+                      arithmeticImage),
+                  buttonBuilder2("Problem Solving",
+                      "assets/images/PROBLEM SOLVING.png", problemSolvingImage),
                 ],
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget buttonBuilder2(String text, String image, AssetImage assetImage) {
+    return GestureDetector(
+      child: AspectRatio(
+        aspectRatio: 11 / 2,
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: assetImage,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ),
+      onTap: () {
+        if (text == "Fractions") {
+          //Fractions
+          fractionTopic();
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (ctx) => QuizScreen(quizRandomQuestion, name, text),
+            ),
+          );
+        } else if (text == "Arithmetic") {
+          arithmeticTopic();
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (ctx) => QuizScreen(quizRandomQuestion, name, text),
+            ),
+          );
+        } else if (text == "Problem Solving") {
+          problemsolvingTopic();
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (ctx) => QuizScreen(quizRandomQuestion, name, text),
+            ),
+          );
+        }
+      },
     );
   }
 

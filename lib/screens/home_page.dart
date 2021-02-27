@@ -19,9 +19,19 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var nameController = TextEditingController();
 
+  var learnImage;
+  var startImage;
+  var leaderBoardImage;
+  var exitImage;
+
   @override
   void initState() {
     super.initState();
+
+    learnImage = AssetImage('assets/images/learn.png');
+    startImage = AssetImage('assets/images/startquiz.png');
+    leaderBoardImage = AssetImage('assets/images/leaderboard.png');
+    exitImage = AssetImage('assets/images/exit.png');
 
     if (widget.isSetName != null ? !widget.isSetName : false) {
       WidgetsBinding.instance.addPostFrameCallback(
@@ -79,53 +89,101 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    precacheImage(learnImage, context);
+    precacheImage(startImage, context);
+    precacheImage(leaderBoardImage, context);
+    precacheImage(exitImage, context);
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/bg.png"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Scaffold(
-          appBar: AppBar(
+    return WillPopScope(
+      onWillPop: () {
+        return showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Exit"),
+            content: const Text("Do you want to exit?"),
             actions: [
-              IconButton(
-                icon: Icon(Icons.settings, color: Colors.white),
-                onPressed: () {
-                  Navigator.of(context).pushNamed(SettingsScreen.routeName);
-                },
+              FlatButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text("No"),
+              ),
+              FlatButton(
+                onPressed: () => SystemNavigator.pop(),
+                child: const Text("Yes"),
               )
             ],
-            elevation: 0,
-            backgroundColor: Colors.transparent,
           ),
-          backgroundColor: Colors.transparent,
-          body: Center(
-            child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Spacer(),
-                  Spacer(),
-                  Spacer(),
-                  homeButtonBuilder2("LEARN", () {
-                    Navigator.of(context).pushNamed(LearnHomeScreen.routeName);
-                  }, "assets/images/learn.png"),
-                  homeButtonBuilder2("START QUIZ", () {
-                    print("start quiz");
-                    Navigator.of(context).pushNamed(HomeQuiz.routeName);
-                  }, "assets/images/startquiz.png"),
-                  homeButtonBuilder2(
-                      "LEADERBOARDS", () {
-                        Navigator.of(context).pushNamed(LeaderBoardsScreen.routeName);
-                      }, "assets/images/leaderboard.png"),
-                  homeButtonBuilder2("EXIT", () {
-                    SystemNavigator.pop();
-                  }, "assets/images/exit.png"),
-                  Spacer(),
-                ],
+        );
+      },
+      child: SafeArea(
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/bg.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Scaffold(
+            appBar: AppBar(
+              actions: [
+                IconButton(
+                  icon: Icon(Icons.settings, color: Colors.white),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(SettingsScreen.routeName);
+                  },
+                )
+              ],
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+            ),
+            backgroundColor: Colors.transparent,
+            body: Center(
+              child: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Spacer(),
+                    Spacer(),
+                    homeButtonBuilder2("LEARN", () {
+                      Navigator.of(context)
+                          .pushNamed(LearnHomeScreen.routeName);
+                    }, "assets/images/learn.png", learnImage),
+                    homeButtonBuilder2("START QUIZ", () {
+                      print("start quiz");
+                      Navigator.of(context).pushNamed(HomeQuiz.routeName);
+                    }, "assets/images/startquiz.png", startImage),
+                    homeButtonBuilder2("LEADERBOARDS", () {
+                      Navigator.of(context)
+                          .pushNamed(LeaderBoardsScreen.routeName);
+                    }, "assets/images/leaderboard.png", leaderBoardImage),
+                    homeButtonBuilder2("EXIT", () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text("Exit"),
+                          content: const Text("Do you want to exit?"),
+                          actions: [
+                            FlatButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: const Text("No"),
+                            ),
+                            FlatButton(
+                              onPressed: () => SystemNavigator.pop(),
+                              child: const Text("Yes"),
+                            )
+                          ],
+                        ),
+                      );
+                    }, "assets/images/exit.png", exitImage),
+                    Spacer(),
+                    Spacer(),
+                  ],
+                ),
               ),
             ),
           ),
@@ -134,14 +192,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget homeButtonBuilder2(String btnText, Function function, String image) {
+  Widget homeButtonBuilder2(String btnText, Function function, String image, AssetImage assetImage) {
     return GestureDetector(
       child: AspectRatio(
         aspectRatio: 11 / 2,
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(image),
+              image: assetImage,
               fit: BoxFit.cover,
             ),
           ),

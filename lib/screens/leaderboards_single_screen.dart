@@ -74,7 +74,7 @@ class _LeaderBoardsSingleScreenState extends State<LeaderBoardsSingleScreen> {
                             textAlign: TextAlign.center,
                             style: TextStyle(color: Colors.white, fontSize: 30),
                           ),
-                        ),
+                        ), 
                         Table(
                           children: [
                             TableRow(children: [

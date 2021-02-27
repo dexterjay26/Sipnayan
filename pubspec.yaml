@@ -76,6 +76,11 @@ flutter:
     - assets/images/learn.png
     - assets/images/startquiz.png
     - assets/images/logo.png
+    - assets/images/ARITHMETIC.png
+    - assets/images/FRACTIONS 1.png
+    - assets/images/FRACTIONS 2.png
+    - assets/images/FRACTIONS.png
+    - assets/images/PROBLEM SOLVING.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

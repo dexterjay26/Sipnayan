@@ -180,12 +180,12 @@ class _QuizScreenState extends State<QuizScreen> {
         return showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text("Quiz"),
-            content: Text("You can't go back at this stage"),
+            title: const Text("Quiz"),
+            content: const Text("You can't go back at this stage"),
             actions: [
               FlatButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text("Ok"),
+                child: const Text("Ok"),
               )
             ],
           ),
